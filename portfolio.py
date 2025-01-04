@@ -4,11 +4,22 @@ import os
 
 # Настройка конфигурации страницы
 st.set_page_config(
-    page_title="Моё Портфолио",
-    page_icon="🚀",
-    layout="wide",
-    initial_sidebar_state="expanded"  # Автоматически открываем боковое меню
+    page_title="Портфолио",
+    page_icon="👨‍💻",
+    layout="wide"
 )
+
+# Скрываем предупреждение
+st.markdown("""
+    <style>
+        .stDeployButton {display:none;}
+        .viewerBadge_container__1QSob {display:none;}
+        .stDeployButton {display:none;}
+        div[data-testid="stDecoration"] {display:none;}
+        div[baseweb="notification"] {display:none;}
+        div[class="stAlert"] {display:none;}
+    </style>
+""", unsafe_allow_html=True)
 
 # Функция для загрузки данных
 def load_portfolio_data():

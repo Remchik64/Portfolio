@@ -9,6 +9,18 @@ st.set_page_config(
     layout="wide"
 )
 
+# Скрываем предупреждение
+st.markdown("""
+    <style>
+        .stDeployButton {display:none;}
+        .viewerBadge_container__1QSob {display:none;}
+        .stDeployButton {display:none;}
+        div[data-testid="stDecoration"] {display:none;}
+        div[data-baseweb="notification"] {display:none;}
+        div[class="stAlert"] {display:none;}
+    </style>
+""", unsafe_allow_html=True)
+
 # Функция для безопасной загрузки изображения
 def safe_load_image(image_path, default_content=None):
     try:
