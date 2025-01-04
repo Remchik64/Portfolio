@@ -3,6 +3,7 @@ import json
 import os
 from PIL import Image
 import shutil
+import time
 
 # Настройка страницы
 st.set_page_config(
@@ -204,22 +205,72 @@ with tab2:
             placeholder="https://example.com"
         )
         
-        # Загрузка изображения проекта
-        project_image = st.file_uploader(
-            f"Изображение для {selected_project}",
+        # Загрузка изображений проекта
+        st.subheader("Изображения проекта")
+        
+        # Инициализируем список изображений, если его нет
+        if "images" not in project:
+            project["images"] = [project.get("image", "static/images/project1.jpg")]
+        
+        # Инициализируем состояние для управления изображениями
+        if "images_to_remove" not in st.session_state:
+            st.session_state.images_to_remove = []
+        
+        # Показываем текущие изображения
+        st.write("Текущие изображения проекта:")
+        cols = st.columns(3)
+        
+        for idx, img_path in enumerate(project["images"]):
+            if os.path.exists(img_path):
+                with cols[idx % 3]:
+                    st.image(img_path, width=200)
+                    if st.button(f"🗑️ Удалить", key=f"delete_img_{selected_project}_{idx}"):
+                        st.session_state.images_to_remove.append(idx)
+                        st.rerun()
+        
+        # Удаляем отмеченные изображения
+        if st.session_state.images_to_remove:
+            for idx in reversed(sorted(st.session_state.images_to_remove)):
+                if idx < len(project["images"]):
+                    # Удаляем файл, если он существует
+                    img_path = project["images"][idx]
+                    if os.path.exists(img_path):
+                        try:
+                            os.remove(img_path)
+                        except:
+                            pass
+                    project["images"].pop(idx)
+            st.session_state.images_to_remove = []
+        
+        # Загрузка нового изображения
+        new_image = st.file_uploader(
+            "Добавить новое изображение",
             type=['jpg', 'png', 'jpeg'],
-            key=f"project_image_{selected_project}"
+            key=f"project_images_{selected_project}"
         )
         
-        if project_image:
-            os.makedirs("static/images", exist_ok=True)
-            with Image.open(project_image) as img:
-                if img.mode != 'RGB':
-                    img = img.convert('RGB')
-                img = resize_image_with_aspect_ratio(img, (800, 450))
-                img.save(f"static/images/project{selected_project[-1]}.jpg", quality=95)
-            st.image(project_image, caption=f"Изображение для {selected_project}", width=400)
+        if new_image:
+            try:
+                os.makedirs("static/images", exist_ok=True)
+                # Генерируем уникальное имя файла
+                timestamp = int(time.time())
+                image_path = f"static/images/project{selected_project[-1]}_{timestamp}.jpg"
+                
+                with Image.open(new_image) as img:
+                    if img.mode != 'RGB':
+                        img = img.convert('RGB')
+                    img = resize_image_with_aspect_ratio(img, (800, 450))
+                    img.save(image_path, quality=95)
+                
+                # Добавляем новое изображение в список
+                project["images"].append(image_path)
+                st.success("✅ Изображение успешно добавлено!")
+            except Exception as e:
+                st.error(f"Ошибка при загрузке изображения: {str(e)}")
         
+        # Для совместимости со старым кодом
+        project["image"] = project["images"][0] if project["images"] else "static/images/project1.jpg"
+
         # Редактирование деталей проекта
         st.subheader("Детали проекта")
         project["details"]["about"] = st.text_area(

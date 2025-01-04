@@ -33,7 +33,11 @@
             "links": {
                 "github": "",
                 "website": ""
-            }
+            },
+            "images": [
+                "static/images/project1.jpg",
+                "static/images/project1_1736018754.jpg"
+            ]
         },
         "Проект 2": {
             "description": "Мобильное приложение на Vue.js и Node.js",

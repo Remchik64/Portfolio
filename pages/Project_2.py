@@ -119,36 +119,86 @@ st.markdown("""
         .website-link {
             background-color: #2d2d2d;
         }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            margin: 2rem 0;
+        }
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .carousel-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .carousel-prev {
+            left: 1rem;
+        }
+        .carousel-next {
+            right: 1rem;
+        }
+        .carousel-indicator {
+            text-align: center;
+            margin-top: 1rem;
+            color: white;
+        }
     </style>
 """, unsafe_allow_html=True)
 
 # Заголовок проекта
 st.title(f"Проект 2: {project_data['description']}")
 
-# Основное изображение проекта
-st.image(project_data["image"], use_column_width=True)
+# Карусель изображений
+st.markdown('<div class="carousel-container">', unsafe_allow_html=True)
+
+# Получаем список изображений
+images = project_data.get("images", [project_data["image"]])
+
+# Проверяем и корректируем индекс, если он выходит за пределы
+if 'current_image_index' not in st.session_state or st.session_state.current_image_index >= len(images):
+    st.session_state.current_image_index = 0
+
+# Кнопки навигации
+col1, col2, col3 = st.columns([1, 10, 1])
+
+with col1:
+    if st.button("◀", key="prev") and len(images) > 1:
+        st.session_state.current_image_index = (st.session_state.current_image_index - 1) % len(images)
+
+with col2:
+    # Показываем текущее изображение
+    current_image = images[st.session_state.current_image_index]
+    st.image(current_image, use_column_width=True)
+    # Индикатор изображений
+    if len(images) > 1:
+        st.markdown(
+            f'<div class="carousel-indicator">{st.session_state.current_image_index + 1} / {len(images)}</div>',
+            unsafe_allow_html=True
+        )
+
+with col3:
+    if st.button("▶", key="next") and len(images) > 1:
+        st.session_state.current_image_index = (st.session_state.current_image_index + 1) % len(images)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Описание проекта
 st.header("О проекте")
 st.write(project_data["details"]["about"])
-
-# Добавляем ссылки на проект
-if "links" in project_data:
-    st.markdown('<div class="project-links">', unsafe_allow_html=True)
-    
-    if project_data["links"].get("github"):
-        st.markdown(
-            f'<a href="{project_data["links"]["github"]}" target="_blank" class="project-link github-link">🔗 GitHub</a>',
-            unsafe_allow_html=True
-        )
-    
-    if project_data["links"].get("website"):
-        st.markdown(
-            f'<a href="{project_data["links"]["website"]}" target="_blank" class="project-link website-link">🌐 Веб-сайт</a>',
-            unsafe_allow_html=True
-        )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Технический стек
 st.header("Технический стек")
