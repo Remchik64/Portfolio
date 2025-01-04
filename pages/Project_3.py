@@ -193,7 +193,7 @@ with col2:
     current_image = images[st.session_state.current_image_index]
     image_content = safe_load_image(current_image)
     if image_content:
-        st.image(image_content, use_column_width=True)
+        st.image(image_content, use_container_width=True)
     else:
         st.info("Изображение недоступно")
     
