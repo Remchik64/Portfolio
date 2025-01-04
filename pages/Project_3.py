@@ -9,6 +9,15 @@ st.set_page_config(
     layout="wide"
 )
 
+# Функция для безопасной загрузки изображения
+def safe_load_image(image_path, default_content=None):
+    try:
+        if os.path.exists(image_path):
+            return open(image_path, 'rb').read()
+        return default_content
+    except:
+        return default_content
+
 # Функция для загрузки данных
 def load_portfolio_data():
     if os.path.exists("data/portfolio_data.json"):
@@ -182,7 +191,12 @@ with col1:
 with col2:
     # Показываем текущее изображение
     current_image = images[st.session_state.current_image_index]
-    st.image(current_image, use_column_width=True)
+    image_content = safe_load_image(current_image)
+    if image_content:
+        st.image(image_content, use_column_width=True)
+    else:
+        st.info("Изображение недоступно")
+    
     # Индикатор изображений
     if len(images) > 1:
         st.markdown(
@@ -195,6 +209,24 @@ with col3:
         st.session_state.current_image_index = (st.session_state.current_image_index + 1) % len(images)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Добавляем ссылки на проект
+if "links" in project_data:
+    st.markdown('<div class="project-links">', unsafe_allow_html=True)
+    
+    if project_data["links"].get("github"):
+        st.markdown(
+            f'<a href="{project_data["links"]["github"]}" target="_blank" class="project-link github-link">🔗 GitHub</a>',
+            unsafe_allow_html=True
+        )
+    
+    if project_data["links"].get("website"):
+        st.markdown(
+            f'<a href="{project_data["links"]["website"]}" target="_blank" class="project-link website-link">🌐 Веб-сайт</a>',
+            unsafe_allow_html=True
+        )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Описание проекта
 st.header("О проекте")

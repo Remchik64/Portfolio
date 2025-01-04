@@ -83,6 +83,15 @@ def load_portfolio_data():
 # Загрузка данных
 portfolio_data = load_portfolio_data()
 
+# Функция для безопасной загрузки изображения
+def safe_load_image(image_path, default_content=None):
+    try:
+        if os.path.exists(image_path):
+            return open(image_path, 'rb').read()
+        return default_content
+    except:
+        return default_content
+
 # Добавление CSS для стилизации
 st.markdown("""
     <style>
@@ -178,8 +187,12 @@ st.title("Портфолио Разработчика / Продакт Мене�
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    # Добавление фотографии
-    st.image("static/images/profile.jpg", use_column_width=True)
+    # Добавление фотографии с обработкой ошибок
+    profile_image = safe_load_image("static/images/profile.jpg")
+    if profile_image:
+        st.image(profile_image, use_column_width=True)
+    else:
+        st.info("Загрузите фото профиля в админ-панели")
 
 with col2:
     # Раздел о себе
