@@ -77,6 +77,10 @@ st.markdown("""
             margin: 1rem 0;
             border: 1px solid #3d3d3d;
             transition: transform 0.3s ease;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            max-width: 100%;
         }
         .feature:hover {
             transform: translateY(-5px);

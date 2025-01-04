@@ -142,10 +142,8 @@ with tab1:
     if profile_image:
         os.makedirs("static/images", exist_ok=True)
         with Image.open(profile_image) as img:
-            # Конвертируем в RGB если изображение в другом формате
             if img.mode != 'RGB':
                 img = img.convert('RGB')
-            # Изменяем размер с сохранением пропорций
             img = resize_image_with_aspect_ratio(img, (400, 400))
             img.save("static/images/profile.jpg", quality=95)
         st.image(profile_image, caption="Новое фото профиля", width=200)
@@ -174,7 +172,7 @@ with tab2:
                 }
             }
         }
-        st.experimental_rerun()
+        st.rerun()
     
     if selected_project:
         project = portfolio_data["projects"][selected_project]
@@ -195,10 +193,8 @@ with tab2:
         if project_image:
             os.makedirs("static/images", exist_ok=True)
             with Image.open(project_image) as img:
-                # Конвертируем в RGB если изображение в другом формате
                 if img.mode != 'RGB':
                     img = img.convert('RGB')
-                # Изменяем размер с сохранением пропорций
                 img = resize_image_with_aspect_ratio(img, (800, 450))
                 img.save(f"static/images/project{selected_project[-1]}.jpg", quality=95)
             st.image(project_image, caption=f"Изображение для {selected_project}", width=400)
@@ -212,11 +208,31 @@ with tab2:
         
         # Редактирование особенностей
         st.subheader("Особенности проекта")
+        
+        # Кнопка для добавления новой особенности
+        if st.button("➕ Добавить особенность"):
+            project["details"]["features"].append("Новая особенность: Описание")
+            st.rerun()
+        
+        # Отображаем каждую особенность с возможностью удаления
+        features_to_remove = []
         for i, feature in enumerate(project["details"]["features"]):
-            project["details"]["features"][i] = st.text_input(
-                f"Особенность {i+1}",
-                feature
-            )
+            col1, col2 = st.columns([8, 1])
+            with col1:
+                project["details"]["features"][i] = st.text_input(
+                    f"Особенность {i+1}",
+                    feature,
+                    key=f"feature_{selected_project}_{i}"
+                )
+            with col2:
+                if st.button("🗑️", key=f"delete_{selected_project}_{i}"):
+                    features_to_remove.append(i)
+        
+        # Удаляем отмеченные особенности
+        if features_to_remove:
+            for index in reversed(features_to_remove):
+                project["details"]["features"].pop(index)
+            st.rerun()
         
         # Редактирование технического стека
         st.subheader("Технический стек")
@@ -247,16 +263,15 @@ if st.button("Сохранить все изменения", type="primary"):
         os.makedirs("static/images", exist_ok=True)
         
         # Сохраняем данные в JSON
-        with open("data/portfolio_data.json", "w", encoding='utf-8') as f:
-            json.dump(portfolio_data, f, ensure_ascii=False, indent=4)
+        save_portfolio_data(portfolio_data)
         
         # Показываем сообщение об успехе
         st.success("✅ Данные успешно сохранены!")
         
-        # Добавляем кнопку для возврата на главную страницу
-        if st.button("Вернуться на главную"):
-            st.switch_page("portfolio.py")
-            
     except Exception as e:
         st.error(f"❌ Ошибка при сохранении данных: {str(e)}")
-        st.info("ℹ️ Пожалуйста, проверьте права доступа к файлам и попробуйте снова.") 
+        st.info("ℹ️ Пожалуйста, проверьте права доступа к файлам и попробуйте снова.")
+
+# Кнопка возврата на главную
+if st.button("← Вернуться на главную"):
+    st.switch_page("portfolio.py") 
