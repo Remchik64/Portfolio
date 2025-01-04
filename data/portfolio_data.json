@@ -8,14 +8,15 @@
             "details": {
                 "about": "Описание проекта",
                 "features": [
-                    "Особенность 1: Описание уцвпатполадвбкюпваимшаплкыачщмслмшполаишпочишпычшславымшвщаыщвыщмышпгышпгвпгнвапшгнвагрдщпвпващпващпвнпщшвгпшвзпгзвшпгзвщшпгвшпгзвшигшапашигашпгашпг",
+                    "Особенность 1: Описание",
                     "Особенность 2: Описание",
                     "Особенность 3: Описание"
                 ],
                 "tech_stack": {
                     "frontend": [
                         "React",
-                        "TypeScript"
+                        "TypeScript",
+                        "Material-UI"
                     ],
                     "backend": [
                         "Python",
@@ -28,6 +29,10 @@
                         "CI/CD"
                     ]
                 }
+            },
+            "links": {
+                "github": "",
+                "website": ""
             }
         },
         "Проект 2": {
@@ -49,7 +54,8 @@
                     ],
                     "backend": [
                         "Node.js",
-                        "Express"
+                        "Express",
+                        "MongoDB"
                     ],
                     "devops": [
                         "Git",
@@ -66,7 +72,7 @@
             "details": {
                 "about": "Описание проекта",
                 "features": [
-                    "Особенность 1:.нзщгзхшжщдглкгнеоунркпыфававпарпролодлждолрпаваымвфсвмистрьобрлоброьпртпавиамывсымипатрпьорбоьпатвимысфвмавипатрпьорбьпртавимысвмавипарпгдшлнеоркпаив",
+                    "Особенность 1: Описание",
                     "Особенность 2: Описание",
                     "Особенность 3: Описание"
                 ],
@@ -92,7 +98,9 @@
     },
     "contacts": {
         "email": "example@example.com",
-        "linkedin": "your-linkedin",
-        "github": "your-github"
+        "linkedin": "https://linkedin.com/in/your-linkedin",
+        "github": "https://github.com/your-github",
+        "resume": "https://startintellect.ru/",
+        "project": "https://startintellect.ru/"
     }
 }

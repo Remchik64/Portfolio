@@ -93,6 +93,32 @@ st.markdown("""
             max-width: 100%;
             height: auto;
         }
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .project-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #2d2d2d;
+            color: #00ccff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #3d3d3d;
+            transition: all 0.3s ease;
+        }
+        .project-link:hover {
+            background-color: #3d3d3d;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .github-link {
+            background-color: #24292e;
+        }
+        .website-link {
+            background-color: #2d2d2d;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -105,6 +131,24 @@ st.image(project_data["image"], use_column_width=True)
 # Описание проекта
 st.header("О проекте")
 st.write(project_data["details"]["about"])
+
+# Добавляем ссылки на проект
+if "links" in project_data:
+    st.markdown('<div class="project-links">', unsafe_allow_html=True)
+    
+    if project_data["links"].get("github"):
+        st.markdown(
+            f'<a href="{project_data["links"]["github"]}" target="_blank" class="project-link github-link">🔗 GitHub</a>',
+            unsafe_allow_html=True
+        )
+    
+    if project_data["links"].get("website"):
+        st.markdown(
+            f'<a href="{project_data["links"]["website"]}" target="_blank" class="project-link website-link">🌐 Веб-сайт</a>',
+            unsafe_allow_html=True
+        )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Технический стек
 st.header("Технический стек")

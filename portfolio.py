@@ -152,6 +152,22 @@ st.markdown("""
         .css-1oe5cao:hover {
             color: #00ccff !important;
         }
+        .contact-link {
+            color: #00ccff !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .contact-link:hover {
+            color: #00ff9d !important;
+            transform: translateX(5px);
+        }
+        .contact-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -172,14 +188,39 @@ with col2:
 
 # Раздел контактов
 st.header("Контакты")
-contact_col1, contact_col2, contact_col3 = st.columns(3)
+contacts = portfolio_data.get("contacts", {})
 
-with contact_col1:
-    st.markdown(f'<div class="contact-info">📧 Email: {portfolio_data["contacts"]["email"]}</div>', unsafe_allow_html=True)
-with contact_col2:
-    st.markdown(f'<div class="contact-info">💼 LinkedIn: {portfolio_data["contacts"]["linkedin"]}</div>', unsafe_allow_html=True)
-with contact_col3:
-    st.markdown(f'<div class="contact-info">🌐 GitHub: {portfolio_data["contacts"]["github"]}</div>', unsafe_allow_html=True)
+# Email
+if contacts.get("email"):
+    st.markdown(
+        f'<a href="mailto:{contacts["email"]}" class="contact-link">'
+        f'<span class="contact-icon">📧</span> {contacts["email"]}</a>',
+        unsafe_allow_html=True
+    )
+
+# GitHub
+if contacts.get("github"):
+    st.markdown(
+        f'<a href="{contacts["github"]}" target="_blank" class="contact-link">'
+        f'<span class="contact-icon">💻</span> GitHub</a>',
+        unsafe_allow_html=True
+    )
+
+# LinkedIn
+if contacts.get("linkedin"):
+    st.markdown(
+        f'<a href="{contacts["linkedin"]}" target="_blank" class="contact-link">'
+        f'<span class="contact-icon">👔</span> LinkedIn</a>',
+        unsafe_allow_html=True
+    )
+
+# Резюме
+if contacts.get("project"):
+    st.markdown(
+        f'<a href="{contacts["project"]}" target="_blank" class="contact-link">'
+        f'<span class="contact-icon">🔗</span> Проект</a>',
+        unsafe_allow_html=True
+    )
 
 # Добавляем заголовок в боковое меню
 st.sidebar.title("Навигация")

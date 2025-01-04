@@ -114,7 +114,8 @@ def load_portfolio_data():
         "contacts": {
             "email": "example@example.com",
             "linkedin": "your-linkedin",
-            "github": "your-github"
+            "github": "your-github",
+            "resume": "https://hh.ru/resume/your-resume"
         }
     }
 
@@ -183,6 +184,26 @@ with tab2:
             project["description"]
         )
         
+        # Добавляем поля для ссылок
+        st.subheader("Ссылки на проект")
+        if "links" not in project:
+            project["links"] = {
+                "github": "",
+                "website": ""
+            }
+        
+        project["links"]["github"] = st.text_input(
+            "Ссылка на GitHub",
+            project["links"].get("github", ""),
+            placeholder="https://github.com/username/repository"
+        )
+        
+        project["links"]["website"] = st.text_input(
+            "Ссылка на сайт проекта",
+            project["links"].get("website", ""),
+            placeholder="https://example.com"
+        )
+        
         # Загрузка изображения проекта
         project_image = st.file_uploader(
             f"Изображение для {selected_project}",
@@ -248,9 +269,38 @@ with tab2:
 
 with tab3:
     st.header("Редактирование контактов")
-    portfolio_data["contacts"]["email"] = st.text_input("Email", portfolio_data["contacts"]["email"])
-    portfolio_data["contacts"]["linkedin"] = st.text_input("LinkedIn", portfolio_data["contacts"]["linkedin"])
-    portfolio_data["contacts"]["github"] = st.text_input("GitHub", portfolio_data["contacts"]["github"])
+    
+    # Email с проверкой формата
+    portfolio_data["contacts"]["email"] = st.text_input(
+        "Email",
+        portfolio_data["contacts"]["email"],
+        placeholder="example@example.com"
+    )
+    
+    # GitHub с добавлением префикса
+    github_username = portfolio_data["contacts"]["github"].replace("https://github.com/", "")
+    github_username = st.text_input(
+        "GitHub username",
+        github_username,
+        placeholder="username"
+    )
+    portfolio_data["contacts"]["github"] = f"https://github.com/{github_username}" if github_username else ""
+    
+    # LinkedIn с добавлением префикса
+    linkedin_username = portfolio_data["contacts"]["linkedin"].replace("https://linkedin.com/in/", "")
+    linkedin_username = st.text_input(
+        "LinkedIn username",
+        linkedin_username,
+        placeholder="username"
+    )
+    portfolio_data["contacts"]["linkedin"] = f"https://linkedin.com/in/{linkedin_username}" if linkedin_username else ""
+    
+    # Ссылка на резюме
+    portfolio_data["contacts"]["project"] = st.text_input(
+        "Ссылка на проект",
+        portfolio_data["contacts"].get("project", ""),
+        placeholder="https://example.com/your-project"
+    )
 
 # Кнопка сохранения
 if st.button("Сохранить все изменения", type="primary"):
