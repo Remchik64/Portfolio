@@ -19,23 +19,18 @@ st.markdown("""
         div[data-baseweb="notification"] {display:none;}
         div[class="stAlert"] {display:none;}
         
-        /* Неоновые рамки для изображений */
+        /* Мягкие неоновые рамки для изображений */
         .element-container img {
-            border-radius: 10px;
-            box-shadow: 0 0 10px #00ff00,
-                       0 0 20px #00ff00,
-                       0 0 30px #00ff00,
-                       0 0 40px #00ff00;
-            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #4d94ff,
+                       0 0 10px #4d94ff;
+            margin: 10px 0;
             transition: all 0.3s ease;
         }
         
         .element-container img:hover {
-            box-shadow: 0 0 15px #00ff00,
-                       0 0 25px #00ff00,
-                       0 0 35px #00ff00,
-                       0 0 45px #00ff00;
-            transform: scale(1.02);
+            box-shadow: 0 0 8px #4d94ff,
+                       0 0 15px #4d94ff;
         }
     </style>
 """, unsafe_allow_html=True)

@@ -9,15 +9,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# Скрываем предупреждение
+# Стили
 st.markdown("""
     <style>
+        /* Скрываем предупреждения */
         .stDeployButton {display:none;}
         .viewerBadge_container__1QSob {display:none;}
-        .stDeployButton {display:none;}
         div[data-testid="stDecoration"] {display:none;}
         div[data-baseweb="notification"] {display:none;}
         div[class="stAlert"] {display:none;}
+        
+        /* Мягкие неоновые рамки для изображений */
+        .element-container img {
+            border-radius: 5px;
+            box-shadow: 0 0 5px #4d94ff,
+                       0 0 10px #4d94ff;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .element-container img:hover {
+            box-shadow: 0 0 8px #4d94ff,
+                       0 0 15px #4d94ff;
+        }
     </style>
 """, unsafe_allow_html=True)
 
