@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 
 # Настройка страницы
 st.set_page_config(
@@ -6,6 +8,43 @@ st.set_page_config(
     page_icon="🚀",
     layout="wide"
 )
+
+# Функция для загрузки данных
+def load_portfolio_data():
+    if os.path.exists("data/portfolio_data.json"):
+        with open("data/portfolio_data.json", "r", encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+# Загружаем данные
+portfolio_data = load_portfolio_data()
+
+# Значения по умолчанию для проекта
+default_project = {
+    "description": "Мобильное приложение на Vue.js и Node.js",
+    "image": "static/images/project2.jpg",
+    "url": "Project_2",
+    "details": {
+        "about": "Описание проекта",
+        "features": [
+            "Особенность 1: Описание",
+            "Особенность 2: Описание",
+            "Особенность 3: Описание"
+        ],
+        "tech_stack": {
+            "frontend": ["Vue.js", "Vuex", "Tailwind CSS"],
+            "backend": ["Node.js", "Express", "MongoDB"],
+            "devops": ["Git", "Jest", "Webpack"]
+        }
+    }
+}
+
+# Получаем данные проекта с обработкой ошибок
+try:
+    project_data = portfolio_data.get("projects", {}).get("Проект 2", default_project)
+except Exception as e:
+    st.error(f"Ошибка при загрузке данных проекта: {str(e)}")
+    project_data = default_project
 
 # Добавление CSS
 st.markdown("""
@@ -42,61 +81,43 @@ st.markdown("""
         .feature:hover {
             transform: translateY(-5px);
         }
+        /* Стили для изображения проекта */
+        [data-testid="stImage"] > img {
+            border-radius: 15px;
+            border: 2px solid #00ccff;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 """, unsafe_allow_html=True)
 
 # Заголовок проекта
-st.title("Проект 2: Название проекта")
+st.title(f"Проект 2: {project_data['description']}")
 
 # Основное изображение проекта
-st.image("static/images/project2.jpg", use_column_width=True)
+st.image(project_data["image"], use_column_width=True)
 
 # Описание проекта
 st.header("О проекте")
-st.write("""
-Здесь подробное описание второго проекта. 
-Опишите уникальные особенности и преимущества вашего решения.
-""")
+st.write(project_data["details"]["about"])
 
 # Технический стек
 st.header("Технический стек")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown('<div class="tech-stack">🔧 Frontend:<br>• Vue.js<br>• Vuex<br>• Tailwind CSS</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">🔧 Frontend:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["frontend"]) + '</div>', unsafe_allow_html=True)
 with col2:
-    st.markdown('<div class="tech-stack">⚙️ Backend:<br>• Node.js<br>• Express<br>• MongoDB</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">⚙️ Backend:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["backend"]) + '</div>', unsafe_allow_html=True)
 with col3:
-    st.markdown('<div class="tech-stack">🛠️ Инструменты:<br>• Git<br>• Jest<br>• Webpack</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">🛠️ DevOps:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["devops"]) + '</div>', unsafe_allow_html=True)
 
 # Ключевые особенности
 st.header("Ключевые особенности")
-features = [
-    "📱 Особенность 1: Адаптивный дизайн и кроссплатформенность",
-    "🔒 Особенность 2: Безопасность и шифрование данных",
-    "⚡ Особенность 3: Высокая производительность"
-]
-
-for feature in features:
+for feature in project_data["details"]["features"]:
     st.markdown(f'<div class="feature">{feature}</div>', unsafe_allow_html=True)
 
-# Результаты и метрики
-st.header("Результаты")
-metrics_col1, metrics_col2 = st.columns(2)
-
-with metrics_col1:
-    st.metric(label="Скорость загрузки", value="1.2s", delta="-30%")
-    st.metric(label="Активные пользователи", value="5K+", delta="↑20%")
-
-with metrics_col2:
-    st.metric(label="Рейтинг", value="4.8/5", delta="↑0.3")
-    st.metric(label="Доступность", value="99.5%", delta="↑3%")
-
-# Ссылки
-st.header("Ссылки")
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown('<div class="tech-stack">🔗 Демо: <a href="#" style="color: #00ff9d;">project2-demo.com</a></div>', unsafe_allow_html=True)
-with col2:
-    st.markdown('<div class="tech-stack">📦 GitHub: <a href="#" style="color: #00ff9d;">github.com/project2</a></div>', unsafe_allow_html=True) 
+# Добавляем кнопку возврата на главную
+if st.button("← Вернуться на главную"):
+    st.switch_page("portfolio.py") 

@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 
 # Настройка страницы
 st.set_page_config(
@@ -6,6 +8,43 @@ st.set_page_config(
     page_icon="🚀",
     layout="wide"
 )
+
+# Функция для загрузки данных
+def load_portfolio_data():
+    if os.path.exists("data/portfolio_data.json"):
+        with open("data/portfolio_data.json", "r", encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+# Загружаем данные
+portfolio_data = load_portfolio_data()
+
+# Значения по умолчанию для проекта
+default_project = {
+    "description": "ML-проект с использованием TensorFlow",
+    "image": "static/images/project3.jpg",
+    "url": "Project_3",
+    "details": {
+        "about": "Описание проекта",
+        "features": [
+            "Особенность 1: Описание",
+            "Особенность 2: Описание",
+            "Особенность 3: Описание"
+        ],
+        "tech_stack": {
+            "frontend": ["TensorFlow.js", "React", "D3.js"],
+            "backend": ["Python", "TensorFlow", "Flask"],
+            "devops": ["Docker", "Kubernetes", "MLflow"]
+        }
+    }
+}
+
+# Получаем данные проекта с обработкой ошибок
+try:
+    project_data = portfolio_data.get("projects", {}).get("Проект 3", default_project)
+except Exception as e:
+    st.error(f"Ошибка при загрузке данных проекта: {str(e)}")
+    project_data = default_project
 
 # Добавление CSS
 st.markdown("""
@@ -42,61 +81,43 @@ st.markdown("""
         .feature:hover {
             transform: translateY(-5px);
         }
+        /* Стили для изображения проекта */
+        [data-testid="stImage"] > img {
+            border-radius: 15px;
+            border: 2px solid #00ccff;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 """, unsafe_allow_html=True)
 
 # Заголовок проекта
-st.title("Проект 3: Название проекта")
+st.title(f"Проект 3: {project_data['description']}")
 
 # Основное изображение проекта
-st.image("static/images/project3.jpg", use_column_width=True)
+st.image(project_data["image"], use_column_width=True)
 
 # Описание проекта
 st.header("О проекте")
-st.write("""
-Здесь подробное описание третьего проекта. 
-Расскажите о технических вызовах и их решениях.
-""")
+st.write(project_data["details"]["about"])
 
 # Технический стек
 st.header("Технический стек")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown('<div class="tech-stack">🔧 ML/AI:<br>• TensorFlow<br>• PyTorch<br>• Scikit-learn</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">🔧 Frontend:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["frontend"]) + '</div>', unsafe_allow_html=True)
 with col2:
-    st.markdown('<div class="tech-stack">⚙️ Данные:<br>• PostgreSQL<br>• Redis<br>• Elasticsearch</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">⚙️ Backend:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["backend"]) + '</div>', unsafe_allow_html=True)
 with col3:
-    st.markdown('<div class="tech-stack">🛠️ Инфраструктура:<br>• Kubernetes<br>• Terraform<br>• Prometheus</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-stack">🛠️ DevOps:<br>• ' + '<br>• '.join(project_data["details"]["tech_stack"]["devops"]) + '</div>', unsafe_allow_html=True)
 
 # Ключевые особенности
 st.header("Ключевые особенности")
-features = [
-    "🤖 Особенность 1: Машинное обучение и предиктивная аналитика",
-    "📊 Особенность 2: Обработка больших данных в реальном времени",
-    "🔄 Особенность 3: Автоматическая масштабируемость"
-]
-
-for feature in features:
+for feature in project_data["details"]["features"]:
     st.markdown(f'<div class="feature">{feature}</div>', unsafe_allow_html=True)
 
-# Результаты и метрики
-st.header("Результаты")
-metrics_col1, metrics_col2 = st.columns(2)
-
-with metrics_col1:
-    st.metric(label="Точность модели", value="95%", delta="↑5%")
-    st.metric(label="Обработка данных", value="1M+/день", delta="↑25%")
-
-with metrics_col2:
-    st.metric(label="Экономия ресурсов", value="40%", delta="↑15%")
-    st.metric(label="ROI", value="300%", delta="↑50%")
-
-# Ссылки
-st.header("Ссылки")
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown('<div class="tech-stack">🔗 Документация: <a href="#" style="color: #00ff9d;">docs.project3.com</a></div>', unsafe_allow_html=True)
-with col2:
-    st.markdown('<div class="tech-stack">📦 API: <a href="#" style="color: #00ff9d;">api.project3.com</a></div>', unsafe_allow_html=True) 
+# Добавляем кнопку возврата на главную
+if st.button("← Вернуться на главную"):
+    st.switch_page("portfolio.py") 

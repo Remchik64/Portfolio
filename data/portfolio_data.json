@@ -1,0 +1,99 @@
+{
+    "about": "Здесь вы можете написать краткую информацию о себе, вашем опыте и навыках.",
+    "projects": {
+        "Проект 1": {
+            "description": "Веб-приложение с использованием React и FastAPI",
+            "image": "static/images/project1.jpg",
+            "url": "Project_1",
+            "details": {
+                "about": "Описание проекта",
+                "features": [
+                    "Особенность 1: Описание",
+                    "Особенность 2: Описание",
+                    "Особенность 3: Описание"
+                ],
+                "tech_stack": {
+                    "frontend": [
+                        "React",
+                        "TypeScript",
+                        "Material-UI"
+                    ],
+                    "backend": [
+                        "Python",
+                        "FastAPI",
+                        "PostgreSQL"
+                    ],
+                    "devops": [
+                        "Docker",
+                        "AWS",
+                        "CI/CD"
+                    ]
+                }
+            }
+        },
+        "Проект 2": {
+            "description": "Мобильное приложение на Vue.js и Node.js",
+            "image": "static/images/project2.jpg",
+            "url": "Project_2",
+            "details": {
+                "about": "Описание проекта",
+                "features": [
+                    "Особенность 1: Описание",
+                    "Особенность 2: Описание",
+                    "Особенность 3: Описание"
+                ],
+                "tech_stack": {
+                    "frontend": [
+                        "Vue.js",
+                        "Vuex",
+                        "Tailwind CSS"
+                    ],
+                    "backend": [
+                        "Node.js",
+                        "Express"
+                    ],
+                    "devops": [
+                        "Git",
+                        "Jest",
+                        "Webpack"
+                    ]
+                }
+            }
+        },
+        "Проект 3": {
+            "description": "ML-проект с использованием TensorFlow",
+            "image": "static/images/project3.jpg",
+            "url": "Project_3",
+            "details": {
+                "about": "Описание проекта",
+                "features": [
+                    "Особенность 1: Описание",
+                    "Особенность 2: Описание",
+                    "Особенность 3: Описание"
+                ],
+                "tech_stack": {
+                    "frontend": [
+                        "TensorFlow.js",
+                        "React",
+                        "D3.js"
+                    ],
+                    "backend": [
+                        "Python",
+                        "TensorFlow",
+                        "Flask"
+                    ],
+                    "devops": [
+                        "Docker",
+                        "Kubernetes",
+                        "MLflow"
+                    ]
+                }
+            }
+        }
+    },
+    "contacts": {
+        "email": "example@example.com",
+        "linkedin": "your-linkedin",
+        "github": "your-github"
+    }
+}
