@@ -1,8 +1,11 @@
 [theme]
-primaryColor = "#4d94ff"  # Цвет неоновых рамок
-backgroundColor = "#0e1117"  # Тёмный фон
-secondaryBackgroundColor = "#1a1c24"  # Цвет для элементов интерфейса
-textColor = "#fafafa"  # Цвет текста
+base="dark"
+primaryColor="#4d94ff"
+secondaryBackgroundColor="#16161a"
+font="monospace"
+
+
+
 
 [server]
 maxUploadSize = 10  # Максимальный размер загружаемых файлов в МБ
